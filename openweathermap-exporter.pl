@@ -84,11 +84,8 @@ sub getSensors() {
 
 			$output .= "# Temperatures in $location\n";
 			$output .= "temperature{location=\"$location\",type=\"current\", geohash=\"$geohash\"} $decoded_json->{main}{temp}\n";
-			$output .= "temperature{location=\"$location\",type=\"max\", geohash=\"$geohash\"} $decoded_json->{main}{temp_max}\n";
-			$output .= "temperature{location=\"$location\",type=\"min\", geohash=\"$geohash\"} $decoded_json->{main}{temp_min}\n";
-
-			#Should be converted to timestamp 
-			#$output .= "measurement_epoch{location=\"$location\"} $decoded_json->{dt}\n";
+			# $output .= "temperature{location=\"$location\",type=\"max\", geohash=\"$geohash\"} $decoded_json->{main}{temp_max}\n";
+			# $output .= "temperature{location=\"$location\",type=\"min\", geohash=\"$geohash\"} $decoded_json->{main}{temp_min}\n";
 
 			$output .= "# Wind in $location\n";
 			# This is not always returned
@@ -96,13 +93,8 @@ sub getSensors() {
 			if (defined $decoded_json->{wind}{deg}) {
 				$windDirection = $decoded_json->{wind}{deg};
 			} 
-			$output .= "wind_speed{location=\"$location\" winddirection=\"$windDirection\", geohash=\"$geohash\"} $decoded_json->{wind}{speed}\n";
-
-			# TODO I fear there might be multiple arrays in there, sometimes
-			# $output .= "id{location=\"$location\"} $decoded_json->{weather}[0]{id}\n";
-
-			# $output .= "location_coordinates{location=\"$location\",dimension=\"latitude\"} $decoded_json->{coord}{lat}\n";
-			# $output .= "location_coordinates{location=\"$location\",dimension=\"longitude\"} $decoded_json->{coord}{lon}\n";
+			# $output .= "wind_speed{location=\"$location\" winddirection=\"$windDirection\", geohash=\"$geohash\"} $decoded_json->{wind}{speed}\n";
+			$output .= "wind_speed{location=\"$location\", geohash=\"$geohash\"} $decoded_json->{wind}{speed}\n";
 
 			$output .= "# Humidity in $location\n";
 			$output .= "humidity_percent{location=\"$location\", geohash=\"$geohash\"} $decoded_json->{main}{humidity}\n";
@@ -116,8 +108,6 @@ sub getSensors() {
 
 			$output .= "# Pressure in $location\n";
 			$output .= "pressure_hectopascal{location=\"$location\",level=\"current\", geohash=\"$geohash\"} $decoded_json->{main}{pressure}\n";
-			# $output .= "pressure_hectopascal{location=\"$location\",level=\"ground\"} $decoded_json->{main}{grnd_level}\n" if defined $decoded_json->{main}{grnd_level};
-			# $output .= "pressure_hectopascal{location=\"$location\",level=\"sea\"} $decoded_json->{main}{sea_level}\n" if defined $decoded_json->{main}{sea_level};
 	}
 
 	my $cgi = CGI->new();
